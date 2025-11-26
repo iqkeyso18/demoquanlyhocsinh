@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Trung Tâm Huyền Kim - Hoàn chỉnh 2025</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    /* VARIABLES */
+    :root{
+        --p:#9c27b0; /* Primary - Tím */
+        --s:#4caf50; /* Secondary - Xanh lá */
+        --d:#f44336; /* Danger - Đỏ */
+        --dark:#1a1a2e; /* Nền Header */
+        --gray:#ddd;
+        --bg-grad: linear-gradient(135deg, #667eea, #764ba2); /* Background Gradient */
+        --bg-grad-dark: linear-gradient(135deg, #3a0050, #9c27b0); /* Background Gradient Darker */
+    }
+
+    /* GLOBAL STYLES */
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:var(--bg-grad);min-height:100vh;color:#333;transition:background-color .3s;}
+    .container{max-width:1350px;margin:auto;padding:20px;}
+
+    /* HEADER & BANNER (New & Improved) */
+    header{
+        background: var(--bg-grad-dark);
+        color: white;
+        padding: 50px 35px; /* Tăng padding để làm banner to hơn */
+        text-align: center;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.4);
+        position: relative;
+        overflow: hidden;
+    }
+    header::before{
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: url('https://picsum.photos/1600/300?blur=5') center/cover no-repeat; /* Ảnh nền đẹp */
+        opacity: 0.2; /* Tăng độ mờ */
+        z-index: 0;
+    }
+    header > * {position: relative; z-index: 1;}
+    h1{font-size: 3.8em; margin-bottom: 5px; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.6);}
+    header p {font-size: 1.3em; font-style: italic;}
+
+    /* --- ANIMATION CHO BANNER CHỮ ĐỘNG --- */
+    .animated-text {
+        overflow: hidden; /* Dùng để cắt chữ */
+        white-space: nowrap; /* Ngăn chữ xuống dòng */
+        margin: 0 auto;
+        animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
+        width: 100%;
+        text-align: center;
+        border-right: .15em solid orange; /* Hiệu ứng con trỏ */
+        box-sizing: content-box;
+        max-width: fit-content;
+    }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+    }
+    @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: white }
+    }
+    /* ------------------------------------- */
+
+    /* LOGIN SCREEN STYLES */
+    .login-container{display:flex;justify-content:center;align-items:center;min-height:70vh;gap:60px;flex-wrap:wrap;}
+    .login-box{
+        background:white;
+        padding:45px;
+        border-radius:25px;
+        box-shadow:0 20px 50px rgba(0,0,0,.3);
+        width:450px; /* Tăng kích thước box */
+        text-align:center;
+        transition:transform .3s, box-shadow .3s;
+        border-top: 5px solid var(--p); /* Thêm đường viền nổi bật */
+    }
+    .login-box:hover{transform:translateY(-12px); box-shadow: 0 30px 60px rgba(0,0,0,.5);}
+    .login-box h2 {color: var(--p); margin-bottom: 25px; font-weight: 700; font-size: 2em;}
+
+    /* FORM ELEMENTS */
+    input, select, textarea{width:100%;padding:15px;margin:12px 0;border:2px solid var(--gray);border-radius:12px;font-size:1.1em;transition:border-color .3s;}
+    input:focus, select:focus, textarea:focus {border-color: var(--p); outline: none;}
+    button{width:100%;padding:15px;background:var(--p);color:white;border:none;border-radius:12px;font-size:1.2em;cursor:pointer;margin-top:15px;transition:background-color .3s, transform .2s;}
+    button:hover{background:#7b1fa2; transform: translateY(-2px);}
+    .btn-gv{background:#e91e63 !important;}
+    .btn-gv:hover{background:#c2185b !important;}
+
+    /* MAIN APP STYLES */
+    .main-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin:35px 0;}
+    .nav-btn{padding:20px;background:var(--p);color:white;border:none;border-radius:15px;font-size:1.15em;cursor:pointer;transition:.3s;box-shadow:0 8px 20px rgba(156,39,176,.3);display:flex; align-items: center; justify-content: center;}
+    .nav-btn:hover{transform:scale(1.05); background:#7b1fa2;}
+    .content{background:white;padding:35px;border-radius:20px;box-shadow:0 15px 40px rgba(0,0,0,.2);display:none;min-height:600px;}
+    .content.active{display:block;}
+
+    /* USER INFO BAR & LOGOUT BUTTON (Thu gọn) */
+    #topBar {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+        display: flex;
+        gap: 10px; /* Khoảng cách giữa info và nút logout */
+        align-items: center;
+    }
+    .user-info{
+        background:rgba(0,0,0,.7);
+        color:white;
+        padding:12px 25px;
+        border-radius:50px;
+        font-weight:600;
+        white-space: nowrap;
+    }
+    .logout-btn{
+        background:var(--d);
+        padding: 10px 18px; /* Giảm padding để nút nhỏ lại */
+        border:none;
+        color:white;
+        border-radius:50px;
+        cursor:pointer;
+        font-size: 1em;
+        transition: background-color .3s;
+    }
+    .logout-btn:hover{background:#c62828;}
+    
+    /* TABLE STYLES */
+    table{width:100%;border-collapse:collapse;margin-top:20px;border-radius:15px;overflow:hidden;}
+    th{background:var(--p);color:white;padding:15px;text-transform:uppercase;}
+    td{padding:12px;text-align:center;border-bottom:1px solid #eee;vertical-align:middle;}
+    tr:nth-child(even){background:#f8f8f8;}
+    .co-mat{background:#c8e6c9 !important;}
+    .vang{background:#ffcdd2 !important;}
+    .no{background:#ffebee !important;}
+    .du{background:#e8f5e8 !important;}
+    
+    /* FILE LIST & IFRAME */
+    .file-list{list-style:none;padding:0;}
+    .file-list li{background:#f8f9fa;padding:18px;margin:12px 0;border-radius:12px;border-left:5px solid var(--p);box-shadow:0 2px 10px rgba(0,0,0,.05);}
+    .file-list a{color:var(--p);font-weight:600;text-decoration:none;font-size:1.1em;}
+    iframe{width:100%;height:750px;border:none;border-radius:15px;box-shadow:0 10px 30px rgba(0,0,0,.2);}
+    
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        h1{font-size: 2.5em;}
+        header{padding: 30px 15px;}
+        .login-container{flex-direction: column; min-height: initial;}
+        .login-box{width: 90%; max-width: 450px; margin-bottom: 30px;}
+        #topBar {
+            position: static;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div id="loginScreen">
+        <header>
+            <h1 class="animated-text">TRUNG TÂM HUYỀN KIM</h1>
+            <p>🌟 Chắp cánh ước mơ – Vươn tới tương lai 🚀</p>
+        </header>
+
+        <div class="login-container">
+            <div class="login-box">
+                <h2>👩‍🏫 Giáo Viên Đăng Nhập 👨‍🏫</h2>
+                <input type="password" id="gvPass" placeholder="Mật khẩu giáo viên">
+                <button class="btn-gv" onclick="loginGV()">Đăng Nhập Giáo Viên</button>
+                <small style="color:#777; margin-top: 10px; display: block;">Mật khẩu: <b>admin2025</b></small>
+            </div>
+
+            <div class="login-box">
+                <h2>🧑‍🎓 Học Sinh Đăng Nhập/Đăng Ký 📝</h2>
+                <div id="loginHSForm">
+                    <input type="text" id="hsUser" placeholder="Tên đăng nhập">
+                    <input type="password" id="hsPass" placeholder="Mật khẩu">
+                    <button onclick="loginHS()">Đăng Nhập Học Sinh</button>
+                    <p style="margin-top:15px;"><a href="#" onclick="showDangKy()" style="color:var(--p); font-weight: 600; text-decoration: none;">Chưa có tài khoản? Đăng ký ngay</a></p>
+                </div>
+
+                <div id="dangKyForm" style="display:none;">
+                    <input type="text" id="hoten" placeholder="Họ và tên">
+                    <select id="lopDK"><option value="">-- Chọn lớp --</option></select>
+                    <input type="text" id="usernameDK" placeholder="Tên đăng nhập (không dấu, không cách)">
+                    <input type="password" id="passDK" placeholder="Mật khẩu">
+                    <button onclick="dangKyHS()" style="background:#4caf50;">Đăng Ký Ngay</button>
+                    <p style="margin-top:10px;"><a href="#" onclick="showLoginHS()" style="color:var(--d); font-weight: 600; text-decoration: none;">Quay lại đăng nhập</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mainApp" style="display:none;">
+        <div id="topBar">
+            <div class="user-info" id="userInfo"></div>
+            <button class="logout-btn" onclick="dangXuat()">Đăng xuất</button>
+        </div>
+        
+        <header><h1>Xin chào, <span id="welcomeName"></span>!</h1></header>
+
+        <div class="main-nav">
+            <button class="nav-btn" onclick="openTab('home')">🏠 Trang Chủ</button>
+            <button class="nav-btn" onclick="openTab('diemdanh')">📋 Điểm Danh</button>
+            <button class="nav-btn" onclick="openTab('hocphi')">💰 Học Phí</button>
+            <button class="nav-btn" onclick="openTab('lichhoc')">🗓️ Lịch Học</button>
+            <button class="nav-btn" onclick="openTab('tailieu')">📚 Tài Liệu</button>
+            <button class="nav-btn" onclick="openTab('tracnghiem')">✍️ Trắc Nghiệm</button>
+        </div>
+
+        <div class="content active" id="home">
+            <h2 style="text-align:center;color:var(--p);margin:30px 0 50px; font-size: 2.5em; font-weight: 700; text-transform: uppercase;">
+                Chào mừng đến Trung Tâm Huyền Kim
+            </h2>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;">
+                
+                <div class="stat-box" style="background:#e3f2fd; border-left: 5px solid var(--p);">
+                    <div class="icon" style="color:var(--p);">🧑‍🎓</div>
+                    <h3 class="stat-number" style="color:var(--p);">1500+</h3>
+                    <p class="stat-label">Học sinh đã và đang theo học</p>
+                </div>
+
+                <div class="stat-box" style="background:#e8f5e8; border-left: 5px solid var(--s);">
+                    <div class="icon" style="color:var(--s);">🏆</div>
+                    <h3 class="stat-number" style="color:var(--s);">25+</h3>
+                    <p class="stat-label">Năm kinh nghiệm giảng dạy</p>
+                </div>
+
+                <div class="stat-box" style="background:#fff3e0; border-left: 5px solid #ff9800;">
+                    <div class="icon" style="color:#ff9800;">👨‍🏫</div>
+                    <h3 class="stat-number" style="color:#ff9800;">100%</h3>
+                    <p class="stat-label">Giáo viên đạt chuẩn, tận tâm</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 50px; padding: 30px; background: #f9f0ff; border-radius: 15px; text-align: center; border: 1px dashed var(--p);">
+                <p style="font-size: 1.3em; color: #555;">
+                    Huyền Kim Cam kết mang đến môi trường học tập hiệu quả và truyền cảm hứng, giúp mỗi học sinh vững vàng kiến thức và tự tin chinh phục các kỳ thi quan trọng.
+                </p>
+            </div>
+        </div>
+
+        <div class="content" id="diemdanh">
+            <h2 style="text-align:center;color:var(--p);margin-bottom:25px;">ĐIỂM DANH BUỔI HỌC</h2>
+            <div style="text-align:center;margin-bottom:25px;">
+                <select id="selectClassDD" onchange="loadDiemDanh(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;"></select>
+                <input type="date" id="ngayXemDD" onchange="loadDiemDanh(document.getElementById('selectClassDD').value)" style="padding:14px;margin-left:10px;font-size:1.1em;border-radius:12px;">
+            </div>
+            <div id="diemDanhContent"></div>
+        </div>
+
+        <div class="content" id="hocphi">
+            <h2 style="text-align:center;color:var(--p);margin-bottom:25px;">QUẢN LÝ HỌC PHÍ</h2>
+            <div style="text-align:center;margin-bottom:25px;">
+                <select id="lopHocPhi" onchange="loadHocPhi(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;"></select>
+                <select id="thangHocPhi" style="padding:14px 30px;font-size:1.2em;border-radius:12px;margin-left:12px;"></select>
+            </div>
+            <div id="hocPhiContent"></div>
+        </div>
+
+        <div class="content" id="lichhoc">
+            <h2 style="text-align:center;color:var(--p);margin-bottom:30px;">LỊCH HỌC CÁC LỚP</h2>
+            <div style="text-align:center;margin-bottom:30px;">
+                <select id="lopLich" onchange="showLich(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;">
+                    <option value="">-- Chọn lớp --</option>
+                </select>
+            </div>
+            <div id="qlLichHoc" style="display:none;background:#e3f2fd;padding:20px;border-radius:15px;margin:20px 0;">
+                <h3 style="color:var(--p);margin-bottom:15px;">Quản lý lịch học (chỉ giáo viên)</h3>
+                <textarea id="noiDungLich" rows="6" style="width:100%;padding:12px;font-size:1.1em;border-radius:8px;border:2px solid #ccc;"></textarea>
+                <div style="margin-top:12px;text-align:right;">
+                    <button onclick="luuLichHoc()" style="background:#4caf50;color:white;padding:10px 30px;border:none;border-radius:8px;">Lưu lịch học</button>
+                    <button onclick="xoaLichHoc()" style="background:#f44336;color:white;padding:10px 30px;border:none;border-radius:8px;margin-left:10px;">Xóa lịch học</button>
+                </div>
+            </div>
+            <div id="lichDisplay" style="background:#f8f9fa;padding:40px;border-radius:20px;text-align:center;font-size:1.5em;color:#555;line-height:1.8;">
+                Vui lòng chọn lớp để xem lịch học
+            </div>
+        </div>
+
+        <div class="content" id="tailieu">
+            <h2 style="text-align:center;color:var(--p);margin-bottom:30px;">TÀI LIỆU HỌC TẬP</h2>
+            <div style="text-align:center;margin-bottom:30px;">
+                <select id="lopTailieu" onchange="loadTailieu(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;"></select>
+            </div>
+            <div id="uploadArea" style="display:none;background:#e8f5e8;padding:25px;border-radius:15px;margin:20px 0;">
+                <h3 style="color:var(--s);">Upload Tài Liệu Mới</h3>
+                <input type="text" id="tenFile" placeholder="Tên tài liệu" style="width:30%;padding:12px;">
+                <input type="file" id="fileUp" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.png" style="width:35%; margin-right: 10px;">
+                <button onclick="uploadFile()" style="background:var(--s);padding:12px 30px;width:15%;">Upload</button>
+            </div>
+            <div id="danhSachFile"></div>
+        </div>
+
+        <div class="content" id="tracnghiem">
+            <h2 style="text-align:center;color:var(--p);margin-bottom:30px;">TRẮC NGHIỆM ONLINE</h2>
+            <div style="text-align:center;margin-bottom:30px;">
+                <select id="lopQuiz" onchange="loadDe(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;"></select>
+                <select id="deQuiz" onchange="showDe(this.value)" style="padding:14px 30px;font-size:1.2em;border-radius:12px;margin-left:10px;display:none;"></select>
+            </div>
+            <div id="themDeArea" style="display:none;background:#e3f2fd;padding:25px;border-radius:15px;margin:20px 0;">
+                <h3 style="color:var(--p);">Thêm Đề Thi Google Forms</h3>
+                <input type="text" id="tenDeMoi" placeholder="Tên đề thi" style="width:30%;padding:12px;">
+                <input type="url" id="linkDeMoi" placeholder="Link Google Forms" style="width:50%;padding:12px;">
+                <button onclick="themDeThi()" style="background:var(--p);padding:12px 30px;width:15%;">Thêm Đề</button>
+            </div>
+            <div id="quizFrame"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Danh sách lớp
+const lopList = [];
+for(let i=4;i<=9;i++)for(let j=1;j<=4;j++)lopList.push(i+"."+j);
+let userType = null; // 'gv' hoặc 'hs'
+let currentUser = null;
+
+// Khởi tạo
+window.onload = () => {
+    // Tạo select lớp
+    const selects = ['selectClassDD','lopHocPhi','lopLich','lopTailieu','lopQuiz','lopDK'];
+    selects.forEach(id => {
+        const sel = document.getElementById(id);
+        if(sel){
+            sel.innerHTML = '<option value="">-- Chọn lớp --</option>';
+            lopList.forEach(l => sel.add(new Option("Lớp "+l, l)));
+        }
+    });
+
+    // Tạo 12 tháng cho học phí
+    const thangSel = document.getElementById('thangHocPhi');
+    if(thangSel){
+        const today = new Date();
+        for(let i=11;i>=0;i--){
+            const d = new Date(today.getFullYear(), today.getMonth()-i, 1);
+            const label = d.toLocaleDateString('vi-VN',{month:'long',year:'numeric'});
+            const val = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+            const opt = new Option(label,val);
+            if(i===0) opt.selected=true;
+            thangSel.add(opt);
+        }
+    }
+
+    // Kiểm tra đã đăng nhập chưa
+    const saved = localStorage.getItem('hk_user');
+    if(saved){
+        const data = JSON.parse(saved);
+        userType = data.type === 'gv' ? 'gv' : 'hs';
+        currentUser = data;
+        loginOK();
+    }
+};
+
+// === ĐĂNG KÝ & ĐĂNG NHẬP ===
+function showDangKy(){document.getElementById('loginHSForm').style.display='none';document.getElementById('dangKyForm').style.display='block';}
+function showLoginHS(){document.getElementById('dangKyForm').style.display='none';document.getElementById('loginHSForm').style.display='block';}
+
+function dangKyHS(){
+    const hoten = document.getElementById('hoten').value.trim();
+    const lop = document.getElementById('lopDK').value;
+    const username = document.getElementById('usernameDK').value.trim().toLowerCase();
+    const pass = document.getElementById('passDK').value;
+    if(!hoten||!lop||!username||!pass){alert("Vui lòng điền đầy đủ!");return;}
+    if(username.includes(' ')){alert("Tên đăng nhập không được có khoảng trắng!");return;}
+
+    let ds = JSON.parse(localStorage.getItem('dshs')||'[]');
+    if(ds.find(u=>u.username===username)){alert("Tên đăng nhập đã tồn tại!");return;}
+
+    ds.push({username,pass,hoten,lop,type:'hs'});
+    localStorage.setItem('dshs',JSON.stringify(ds));
+    alert("Đăng ký thành công! Bạn có thể đăng nhập ngay.");
+    showLoginHS();
+    document.getElementById('hoten').value=document.getElementById('usernameDK').value=document.getElementById('passDK').value='';
+}
+
+function loginHS(){
+    const username = document.getElementById('hsUser').value.trim().toLowerCase();
+    const pass = document.getElementById('hsPass').value;
+    const ds = JSON.parse(localStorage.getItem('dshs')||'[]');
+    const user = ds.find(u=>u.username===username && u.pass===pass);
+    if(user){
+        userType='hs'; currentUser=user;
+        localStorage.setItem('hk_user',JSON.stringify(user));
+        loginOK();
+    }else alert("Sai tên đăng nhập hoặc mật khẩu!");
+}
+
+function loginGV(){
+    if(document.getElementById('gvPass').value==="admin2025"){
+        userType='gv'; currentUser={hoten:"GIÁO VIÊN"};
+        localStorage.setItem('hk_user',JSON.stringify({type:'gv'}));
+        loginOK();
+    }else alert("Sai mật khẩu giáo viên!");
+}
+
+function loginOK(){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainApp').style.display='block';
+    document.getElementById('userInfo').textContent = userType==='gv'?'GIÁO VIÊN':currentUser.hoten;
+    document.getElementById('welcomeName').textContent = userType==='gv'?'GIÁO VIÊN':currentUser.hoten;
+
+    if(userType==='gv'){
+        document.getElementById('uploadArea').style.display='flex';
+        document.getElementById('themDeArea').style.display='flex';
+        document.getElementById('qlLichHoc').style.display='block';
+    } else {
+        document.getElementById('uploadArea').style.display='none';
+        document.getElementById('themDeArea').style.display='none';
+        document.getElementById('qlLichHoc').style.display='none';
+    }
+    openTab('home');
+}
+function dangXuat(){localStorage.removeItem('hk_user');location.reload();}
+function openTab(t){document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));document.getElementById(t).classList.add('active');}
+
+// === ĐIỂM DANH (có xem lại ngày cũ + hiển thị Check/Cross) ===
+function loadDiemDanh(lop){
+    if(!lop){document.getElementById('diemDanhContent').innerHTML='';return;}
+    if(userType!=='gv'){document.getElementById('diemDanhContent').innerHTML='<p style="text-align:center;color:red;font-size:1.5em;">Chỉ giáo viên được xem!</p>';return;}
+
+    const inputDate = document.getElementById('ngayXemDD').value;
+    const ngay = inputDate ? new Date(inputDate).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN');
+    const isToday = ngay === new Date().toLocaleDateString('vi-VN');
+
+    let ds = JSON.parse(localStorage.getItem('hs_'+lop)||'[]');
+    if(ds.length===0){for(let i=1;i<=30;i++)ds.push({stt:i,ten:`Học sinh ${i}`});localStorage.setItem('hs_'+lop,JSON.stringify(ds));}
+
+    const key = 'dd_'+lop+'_'+ngay;
+    let dd = JSON.parse(localStorage.getItem(key)||'[]');
+    if(dd.length===0){dd=ds.map(h=>({...h,tt:'co-mat',gc:''}));localStorage.setItem(key,JSON.stringify(dd));}
+
+    let html=`<div style="background:#e3f2fd;padding:18px;border-radius:15px;text-align:center;margin-bottom:25px;"><h3>LỚP ${lop} – ${ngay} ${!isToday?'(xem lại)':''}</h3></div><table>
+        <tr><th>STT</th><th>Họ tên</th><th>Có mặt</th><th>Vắng</th><th>Ghi chú</th></tr>`;
+    let comat=0;
+    dd.forEach((h,i)=>{
+        if(h.tt==='co-mat')comat++;
+        html+=`<tr class="${h.tt}">
+            <td>${h.stt}</td>
+            <td ${isToday?'contenteditable onblur="suaTen(\''+lop+'\','+i+',this.innerText)"':''}>${h.ten}</td>
+            <td ${isToday?'onclick="diem(\''+lop+'\','+i+',\'co-mat\')"' : ''} style="font-size:2.5em;cursor:${isToday?'pointer':'default'};">${h.tt==='co-mat'?'✓':''}</td>
+            <td ${isToday?'onclick="diem(\''+lop+'\','+i+',\'vang\')"' : ''} style="font-size:2.5em;cursor:${isToday?'pointer':'default'};">${h.tt==='vang'?'✗':''}</td>
+            <td ${isToday?'contenteditable onblur="ghiChu(\''+lop+'\','+i+',this.innerText)"':''}>${h.gc}</td>
+        </tr>`;
+    });
+    html+=`</table><div style="margin-top:20px;padding:18px;background:#e8f5e8;border-radius:15px;text-align:center;font-size:1.4em;">
+        Tổng: ${ds.length} | Có mặt: ${comat} | Vắng: ${ds.length-comat}
+    </div>`;
+    document.getElementById('diemDanhContent').innerHTML=html;
+}
+function diem(l,i,t){
+    const inputDate = document.getElementById('ngayXemDD').value;
+    const ngay = inputDate ? new Date(inputDate).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN');
+    const k='dd_'+l+'_'+ngay;
+    let d=JSON.parse(localStorage.getItem(k)||'[]');
+    d[i].tt=t;
+    localStorage.setItem(k,JSON.stringify(d));
+    loadDiemDanh(l);
+}
+function suaTen(l,i,t){
+    t=t.trim()||`Học sinh ${i+1}`;
+    let ds=JSON.parse(localStorage.getItem('hs_'+l)||'[]');
+    ds[i].ten=t; localStorage.setItem('hs_'+l,JSON.stringify(ds));
+}
+function ghiChu(l,i,t){
+    const inputDate = document.getElementById('ngayXemDD').value;
+    const ngay = inputDate ? new Date(inputDate).toLocaleDateString('vi-VN') : new Date().toLocaleDateString('vi-VN');
+    let d=JSON.parse(localStorage.getItem('dd_'+l+'_'+ngay)||'[]');
+    d[i].gc=t; localStorage.setItem('dd_'+l+'_'+ngay,JSON.stringify(d));
+}
+
+// === HỌC PHÍ ===
+function loadHocPhi(lop){
+    if(!lop){document.getElementById('hocPhiContent').innerHTML='';return;}
+    if(userType!=='gv'){document.getElementById('hocPhiContent').innerHTML='<p style="text-align:center;color:red;font-size:1.5em;">Chỉ giáo viên xem được!</p>';return;}
+
+    const thang=document.getElementById('thangHocPhi').value;
+    const tenThang=document.getElementById('thangHocPhi').options[document.getElementById('thangHocPhi').selectedIndex].text;
+    let ds=JSON.parse(localStorage.getItem('hs_'+lop)||'[]');
+    if(ds.length===0){for(let i=1;i<=30;i++)ds.push({stt:i,ten:`Học sinh ${i}`});localStorage.setItem('hs_'+lop,JSON.stringify(ds));}
+
+    const key=`hp_${lop}_${thang}`;
+    let hp=JSON.parse(localStorage.getItem(key)||'[]');
+    if(hp.length===0){hp=ds.map(h=>({...h,tien:1000000,dadong:0,conno:1000000,ghichu:''}));localStorage.setItem(key,JSON.stringify(hp));}
+
+    let tong=0,dathu=0,conno=0;
+    let html=`<div style="background:#e8f5e8;padding:18px;border-radius:15px;text-align:center;margin-bottom:25px;"><h3>HỌC PHÍ LỚP ${lop} – ${tenThang}</h3></div><table>
+        <tr><th>STT</th><th>Họ tên</th><th>Học phí</th><th>Đã đóng</th><th>Còn nợ</th><th>Ghi chú</th><th></th></tr>`;
+    hp.forEach((h,i)=>{
+        tong+=h.tien;dathu+=h.dadong;conno+=h.conno;
+        html+=`<tr class="${h.conno>0?'no':'du'}">
+            <td>${h.stt}</td>
+            <td contenteditable onblur="suaTenHP('${lop}','${thang}',${i},this.innerText)">${h.ten}</td>
+            <td><input type="number" value="${h.tien}" style="width:100px;" onchange="capNhatTien('${lop}','${thang}',${i},this.value)"></td>
+            <td><input type="number" value="${h.dadong}" style="width:100px;" onchange="capNhatDaDong('${lop}','${thang}',${i},this.value)"></td>
+            <td style="font-weight:bold;color:${h.conno>0?'red':'green'};">${f(h.conno)}</td>
+            <td contenteditable onblur="capNhatGC('${lop}','${thang}',${i},this.innerText)">${h.ghichu}</td>
+            <td><button onclick="dongDu('${lop}','${thang}',${i})" style="background:#4caf50;color:white;padding:8px 15px;border:none;border-radius:8px;">Đóng đủ</button></td>
+        </tr>`;
+    });
+    html+=`</table><div style="margin-top:25px;padding:20px;background:#e3f2fd;border-radius:15px;text-align:center;font-size:1.4em;">
+        Tổng: ${f(tong)} | Đã thu: <span style="color:green">${f(dathu)}</span> | Còn nợ: <span style="color:red">${f(conno)}</span>
+    </div>`;
+    document.getElementById('hocPhiContent').innerHTML=html;
+}
+function f(n){return new Intl.NumberFormat('vi-VN').format(n)+'đ';}
+function capNhatTien(l,t,i,v){const k=`hp_${l}_${t}`;let d=JSON.parse(localStorage.getItem(k));d[i].tien=+v||0;d[i].conno=d[i].tien-d[i].dadong;localStorage.setItem(k,JSON.stringify(d));loadHocPhi(l);}
+function capNhatDaDong(l,t,i,v){const k=`hp_${l}_${t}`;let d=JSON.parse(localStorage.getItem(k));d[i].dadong=+v||0;d[i].conno=d[i].tien-d[i].dadong;localStorage.setItem(k,JSON.stringify(d));loadHocPhi(l);}
+function capNhatGC(l,t,i,v){const k=`hp_${l}_${t}`;let d=JSON.parse(localStorage.getItem(k));d[i].ghichu=v;localStorage.setItem(k,JSON.stringify(d));}
+function suaTenHP(l,t,i,v){v=v.trim()||`Học sinh ${i+1}`;const k=`hp_${l}_${t}`;let d=JSON.parse(localStorage.getItem(k));d[i].ten=v;localStorage.setItem(k,JSON.stringify(d));}
+function dongDu(l,t,i){const k=`hp_${l}_${t}`;let d=JSON.parse(localStorage.getItem(k));d[i].dadong=d[i].tien;d[i].conno=0;d[i].ghichu="Đã đóng đủ";localStorage.setItem(k,JSON.stringify(d));loadHocPhi(l);}
+document.getElementById('thangHocPhi').onchange=()=>{const l=document.getElementById('lopHocPhi').value;if(l)loadHocPhi(l);};
+
+// === LỊCH HỌC ===
+function showLich(lop){
+    if(!lop){
+        document.getElementById('lichDisplay').innerHTML="Vui lòng chọn lớp để xem lịch học";
+        document.getElementById('qlLichHoc').style.display='none';
+        return;
+    }
+    if(userType==='gv'){
+        document.getElementById('qlLichHoc').style.display='block';
+        document.getElementById('noiDungLich').value = localStorage.getItem('lich_'+lop) || "";
+    }else document.getElementById('qlLichHoc').style.display='none';
+
+    const lich = localStorage.getItem('lich_'+lop) || "Chưa có lịch học cho lớp này";
+    document.getElementById('lichDisplay').innerHTML = `<h3 style="color:var(--p);">LỚP ${lop}</h3><div style="font-size:1.2em;text-align:left;max-width:800px;margin:0 auto;line-height:1.8;">${lich.replace(/\n/g,'<br>')}</div>`;
+}
+function luuLichHoc(){
+    const lop=document.getElementById('lopLich').value;
+    if(!lop)return alert("Chọn lớp trước!");
+    const nd=document.getElementById('noiDungLich').value.trim();
+    if(nd==="")return alert("Bạn chưa nhập nội dung lịch học!");
+    localStorage.setItem('lich_'+lop,nd);
+    alert("Đã lưu lịch học lớp "+lop);
+    showLich(lop);
+}
+function xoaLichHoc(){
+    const lop=document.getElementById('lopLich').value;
+    if(!lop)return alert("Chọn lớp trước!");
+    if(confirm("Xóa hoàn toàn lịch học lớp "+lop+"?")){
+        localStorage.removeItem('lich_'+lop);
+        document.getElementById('noiDungLich').value="";
+        alert("Đã xóa!");
+        showLich(lop);
+    }
+}
+
+// === TÀI LIỆU ===
+function uploadFile(){
+    const lop=document.getElementById('lopTailieu').value;
+    const fileInput=document.getElementById('fileUp');
+    const ten=document.getElementById('tenFile').value || fileInput.files[0]?.name;
+    if(!lop||!fileInput.files[0])return alert("Chọn lớp và file!");
+    const reader=new FileReader();
+    reader.onload=e=>{
+        let ds=JSON.parse(localStorage.getItem('file_'+lop)||'[]');
+        ds.push({ten,data:e.target.result,ngay:new Date().toLocaleDateString('vi-VN')});
+        localStorage.setItem('file_'+lop,JSON.stringify(ds));
+        alert("Upload thành công!");
+        loadTailieu(lop);
+        document.getElementById('tenFile').value='';fileInput.value='';
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+}
+function loadTailieu(lop){
+    if(!lop)return;
+    const ds=JSON.parse(localStorage.getItem('file_'+lop)||'[]');
+    let html=ds.length===0?"<p style='text-align:center;color:#999;margin-top:50px;'>Chưa có tài liệu nào</p>":"<ul class='file-list'>";
+    ds.forEach(f=>{html+=`<li><a href="${f.data}" download="${f.ten}"> ${f.ten}</a> <small>(${f.ngay})</small></li>`;});
+    if(ds.length>0)html+="</ul>";
+    document.getElementById('danhSachFile').innerHTML=html;
+}
+
+// === TRẮC NGHIỆM ===
+function themDeThi(){
+    const lop=document.getElementById('lopQuiz').value;
+    const ten=document.getElementById('tenDeMoi').value.trim();
+    const link=document.getElementById('linkDeMoi').value.trim();
+    if(!lop||!ten||!link)return alert("Nhập đầy đủ!");
+    let ds=JSON.parse(localStorage.getItem('dethi')||'{}');
+    if(!ds[lop])ds[lop]=[];
+    ds[lop].push({ten,link});
+    localStorage.setItem('dethi',JSON.stringify(ds));
+    alert("Thêm đề thành công!");
+    loadDe(lop);
+    document.getElementById('tenDeMoi').value='';document.getElementById('linkDeMoi').value='';
+}
+function loadDe(lop){
+    if(!lop)return;
+    const ds=JSON.parse(localStorage.getItem('dethi')||'{}');
+    const sel=document.getElementById('deQuiz');
+    sel.style.display='inline-block';
+    sel.innerHTML='<option value="">-- Chọn đề thi --</option>';
+    if(ds[lop])ds[lop].forEach((d,i)=>sel.add(new Option(d.ten,i)));
+}
+function showDe(idx){
+    const lop=document.getElementById('lopQuiz').value;
+    const ds=JSON.parse(localStorage.getItem('dethi')||'{}');
+    if(ds[lop]&&ds[lop][idx]){
+        document.getElementById('quizFrame').innerHTML=`<iframe src="${ds[lop][idx].link}" allowfullscreen></iframe>`;
+    }
+}
+</script>
+</body>
+</html>
