@@ -256,9 +256,15 @@
             },
 
             // ─── QUẢN LÝ HỌC SINH (có thể thêm/sửa/xóa) ───
-            renderStudentList() {
-                const students = db.get('students').sort((a, b) => a.name.localeCompare(b.name, 'vi'));
-                let classOptions = CLASSES.map(c => `<option value="${c}">${c}</option>`).join('');
+            renderStudentList(classFilter = 'all') { // Đã thêm tham số classFilter
+                let students = db.get('students').sort((a, b) => a.name.localeCompare(b.name, 'vi'));
+                
+                // Logic Lọc theo Lớp
+                if (classFilter !== 'all') {
+                    students = students.filter(s => s.classId === classFilter);
+                }
+
+                let classOptions = CLASSES.map(c => `<option value="${c}" ${c === classFilter ? 'selected' : ''}>Lớp ${c}</option>`).join('');
 
                 let rows = students.map((s, i) => `
                     <tr id="student-${s.id}">
@@ -275,12 +281,22 @@
                 document.getElementById('mainContent').innerHTML = `
                     <div class="card border-t-8 border-primary-blue">
                         <h2 class="text-4xl font-extrabold text-primary-blue mb-8">DANH SÁCH HỌC SINH</h2>
+                        
+                        <div class="mb-6 p-4 bg-yellow-50 rounded-xl shadow-inner border border-yellow-200 flex items-center gap-4">
+                            <label for="classFilter" class="font-bold text-lg text-secondary-orange"><i class="fas fa-filter mr-2"></i> LỌC THEO LỚP:</label>
+                            <select id="classFilter" onchange="app.renderStudentList(this.value)" class="input-field !w-auto !py-2 !px-4 bg-white font-bold">
+                                <option value="all" ${classFilter === 'all' ? 'selected' : ''}>Tất cả các lớp</option>
+                                ${classOptions}
+                            </select>
+                            <span class="ml-auto font-bold text-primary-blue">Tìm thấy: <span class="text-secondary-orange">${students.length}</span> học sinh</span>
+                        </div>
+                        
                         <div class="mb-8 p-4 bg-light-bg rounded-xl shadow-inner border border-gray-200">
                             <h3 class="text-xl font-bold mb-4 text-secondary-orange">THÊM HỌC SINH MỚI</h3>
                             <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
                                 <input id="newName" placeholder="Họ tên" class="input-field col-span-1 md:col-span-2">
                                 <input id="newPhone" placeholder="SĐT PH" class="input-field col-span-1">
-                                <select id="newClass" class="input-field col-span-1">${classOptions}</select>
+                                <select id="newClass" class="input-field col-span-1">${CLASSES.map(c => `<option value="${c}">${c}</option>`).join('')}</select>
                                 <button onclick="addStudent()" class="btn-secondary col-span-1 !py-3">THÊM</button>
                             </div>
                         </div>
@@ -418,7 +434,7 @@
                 `;
             },
             
-            // ─── BÁO CÁO THỐNG KÊ (NEW) ───
+            // ─── BÁO CÁO THỐNG KÊ ───
             renderReports() {
                 const students = db.get('students');
                 const attendance = db.get('attendance');
